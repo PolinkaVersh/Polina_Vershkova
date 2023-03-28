@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>SNAKE</title>
+
+	<style type="text/css">
+		.container {
+			border: 2px solid black;
+			width: fit-content;
+		}
+		.row {
+			margin: 0;
+			line-height: 0;
+		}
+		.cell {
+			display: inline-flex;
+			width: 10px;
+			height: 10px;
+			background-color: #CCC;
+		}
+		.food {
+			display: block;
+			width: 100%;
+			height: 100%-1px;
+			background-color: #F00;
+			border: none;
+			margin: 0;
+			padding: 0;
+			line-height: 0;
+			border-radius: 3px;
+			border: 1px solid black;
+		}
+		.snake {
+			display: block;
+			width: 100%;
+			height: 100%;
+			background-color: #064;
+			border: none;
+			margin: 0;
+			padding: 0;
+			line-height: 0;
+		}
+		#banner {
+			width: 150px;
+			height: 150px;
+			background-color: #CCC;
+			text-align: center;
+			vertical-align: center;
+			padding: auto;
+		}
+		.wall {
+			background-color: #FF0;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="container" id="container"></div>
+	<div id="buttondiv">
+		<button onclick="start()">start</button>
+	</div>
+	<div><p><span>SCORE: </span><span id="score">0</span></span></p></div>
+</body>
+<script type="text/javascript">
+	var size = [50, 50];
+	//var headPosition = [Math.round(size[0] / 2), Math.round(size[1] / 2)];
+	var body = [];
+	var headPosition = [];
+	var foodPosition = [0,0];
+	var direction;
+	var score = 0;
+	var timerId;
+
+	function init(){
+		for (var i = 0; i < size[0]; i++) {
+			document.getElementById('container').innerHTML += "<div class='row' id='row" + i + "'></div>";
+			for (var j = 0; j < size[1]; j++) {
+				document.getElementById('row' + i).innerHTML += "<div class='cell' id='cell" + i + "_" + j + "'></div>";
+			}
+		}
+		for (var i = 0; i < size[0]; i++) {
+			document.getElementById('cell0_' + i).style.backgroundColor = '#AAAA00';
+  			document.getElementById('cell' + (size[0]-1) + '_' + i).style.backgroundColor = '#AAAA00';
+  			document.getElementById('cell' + i + '_' + 0).style.backgroundColor = '#AAAA00';
+  			document.getElementById('cell'+ i + '_' + (size[0]-1)).style.backgroundColor = '#AAAA00';
+		}
+		direction = 'right';
+		body = [[5,5],[5,4],[5,3],[5,2],[5,1]];
+		headPosition = body[0]
+	}
+	
+
+	function addFood() {
+  		foodPosition = [Math.round(Math.random() * (size[0]-2) + 1), Math.round(Math.random() * (size[1]-2)+1)];
+  		var cellId = 'cell' + foodPosition[0] + '_' + foodPosition[1];
+  		cellId = String(cellId);
+  		document.getElementById(cellId).innerHTML = "<div class='food'></div>";
+	}
+
+
+	function eatFood(){
+		if (headPosition[0] == foodPosition[0] && headPosition[1] == foodPosition[1]) {
+			score +=1;
+			document.getElementById('score').innerHTML = score;
+			addFood();
+			becomeLonger();
+		}
+	}
+
+
+	function becomeLonger(){
+		body.push( body[body.length-1] );
+	}
+
+
+
+	function move() {
+		switch (direction){
+			case 'right':
+				for (var i = body.length - 1; i >= 1; i--) {
+					body[i] = body[i-1];
+				}
+				var currentpos = [0,0];
+				currentpos[0] = body[0][0];
+				currentpos[1] = body[0][1] + 1;
+				body[0] = currentpos;
+				headPosition = body[0];
+				for (var i = body.length - 1; i >= 0; i--) {
+					var cellId = 'cell' + body[i][0] + '_' + body[i][1];
+	  				cellId = String(cellId);
+	  				document.getElementById(cellId).innerHTML = "<div class='snake'></div>";
+				}
+				removeCell();
+				eatFood();
+			break;
+
+			case 'down':
+				for (var i = body.length - 1; i >= 1; i--) {
+					body[i] = body[i-1];
+				}
+				var currentpos = [0,0];
+				currentpos[0] = body[0][0] + 1;
+				currentpos[1] = body[0][1];
+				body[0] = currentpos;
+				headPosition = body[0];
+				for (var i = body.length - 1; i >= 0; i--) {
+					var cellId = 'cell' + body[i][0] + '_' + body[i][1];
+	  				cellId = String(cellId);
+	  				document.getElementById(cellId).innerHTML = "<div class='snake'></div>";
+				}
+				removeCell();
+				eatFood();
+			break;
+
+			case 'left':
+				for (var i = body.length - 1; i >= 1; i--) {
+					body[i] = body[i-1];
+				}
+				var currentpos = [0,0];
+				currentpos[0] = body[0][0];
+				currentpos[1] = body[0][1] - 1;
+				body[0] = currentpos;
+				headPosition = body[0];
+				for (var i = body.length - 1; i >= 0; i--) {
+					var cellId = 'cell' + body[i][0] + '_' + body[i][1];
+	  				cellId = String(cellId);
+	  				document.getElementById(cellId).innerHTML = "<div class='snake'></div>";
+				}
+				removeCell();
+				eatFood();
+			break;
+
+			case 'up':
+				for (var i = body.length - 1; i >= 1; i--) {
+					body[i] = body[i-1];
+				}
+				var currentpos = [0,0];
+				currentpos[0] = body[0][0] - 1;
+				currentpos[1] = body[0][1];
+				body[0] = currentpos;
+				headPosition = body[0];
+				for (var i = body.length - 1; i >= 0; i--) {
+					var cellId = 'cell' + body[i][0] + '_' + body[i][1];
+	  				cellId = String(cellId);
+	  				document.getElementById(cellId).innerHTML = "<div class='snake'></div>";
+				}
+				removeCell();
+				eatFood();
+			break;
+		}
+		check()
+	}
+
+
+	function removeCell() {
+		var cellId = 'cell' + body[body.length-1][0] + '_' + body[body.length-1][1];
+		document.getElementById(cellId).innerHTML = "";
+
+	}
+
+
+
+	function listen() {
+		document.addEventListener('keydown', function(event){
+    		var dir = '';
+    		switch (event.key) {
+    			case "ArrowDown":
+	    			if (direction != 'up') {
+	    				direction = 'down';
+	    			}
+    				break;
+    			case "ArrowUp":
+    				if (direction != 'down') {
+	    				direction = 'up';
+	    			}
+    				break;
+    			case "ArrowRight":
+    				if (direction != 'left') {
+	    				direction = 'right';
+	    			}
+    				break;
+    			case "ArrowLeft":
+    				if (direction != 'right') {
+	    				direction = 'left';
+	    			}
+    				break;
+    		}
+		});
+	}
+
+
+	function check() {
+		for (var i = body.length - 1; i >= 1; i--) {
+			if (headPosition[0] == body[i][0] && headPosition[1] == body[i][1]) {
+				stop();
+			}
+		}
+		if (direction == 'right' && headPosition[1] == size[1]-1) {
+			stop();
+		}
+		if (direction == 'down' && headPosition[0] == size[0]-1) {
+			stop();
+		}
+		if (direction == 'left' && headPosition[1] == 0) {
+			stop();
+		}
+		if (direction == 'up' && headPosition[0] == 0) {
+			stop();
+		}
+	}
+	var startflag = false;
+	function start() {
+		if (startflag == false) {
+			startflag = true;
+			init();
+			document.getElementById('buttondiv').innerHTML += "<button onclick='stop()'>stop</button>";
+			addFood();
+			listen();
+			timerId = setInterval(() => move(), 100);
+		}
+	}
+
+
+	function stop() {
+		setTimeout(() => { clearInterval(timerId); alert('Game over. Score: ' + score); }, 10);
+		setTimeout(function(){location.reload();}, 100);
+	}
+
+</script>
+</html>
