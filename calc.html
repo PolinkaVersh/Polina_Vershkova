@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <style>
+    #inputbox {
+      margin: 5px 0;
+      width: 250px;
+      height: 30px;
+      color: black;
+      border: 1px solid black;
+      background-color: white;
+    }
+    #input {
+      height: 30px;
+      display: block;
+      color: #000;
+    }
+    .row {
+      display: flex;
+      margin-left: 7px;
+      margin-right: 7px;
+      justify-content: center;
+    }
+    .cell {
+      display: inline-flex;
+      margin: 2px;
+      padding: 2px;
+      justify-content: center;
+      width: 60px;
+      height: 30px;
+      border: 1px solid black;
+      background-color: grey;
+      border-radius: 5px;
+    }
+    p {
+      margin: 0;
+      display: block;
+      color: white;
+    }
+    .container {
+      border: 1px solid black;
+      display: inline-block;
+      padding: 5px;
+      background-color: #EEE;
+    }
+    .op {
+      display: inline-flex;
+      margin: 2px;
+      padding: 2px;
+      justify-content: center;
+      width: 50px;
+      height: 30px;
+      border: 1px solid black;
+      background-color: #454743;
+      border-radius: 5px;
+    }
+    .func {
+      display: inline-flex;
+      margin: 2px;
+      padding: 2px;
+      justify-content: center;
+      width: 50px;
+      height: 30px;
+      border: 1px solid black;
+      background-color: #454743;
+      border-radius: 5px;
+      font-size: 10px;
+    }
+    #op-row, #func-row {
+      text-align: center;
+    }
+    #eq {
+      background-color: #FF6347;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+  <div id="inputbox">
+  </div>
+
+  <div class="row">
+    <button class="cell" id="1"><p>1</p></button>
+    <button class="cell" id="2"><p>2</p></button>
+    <button class="cell" id="3"><p>3</p></button>
+  </div>
+  <div class="row">
+    <button class="cell" id="4"><p>4</p></button>
+    <button class="cell" id="5"><p>5</p></button>
+    <button class="cell" id="6"><p>6</p></button>
+  </div>
+  <div class="row">
+    <button class="cell" id="7"><p>7</p></button>
+    <button class="cell" id="8"><p>8</p></button>
+    <button class="cell" id="9"><p>9</p></button>
+  </div>
+  <div class="row">
+    <button class="cell" id="clear"><p>&#8701;</p></button>
+    <button class="cell" id="0"><p>0</p></button>
+    <button class="cell" id="eq"><p>&#61;</p></button>
+  </div>
+  <div class="row" id="op-row">
+    <button class="op" id="minus"><p>&#8722;</p></button>
+    <button class="op" id="plus"><p>&#43;</p></button>
+    <button class="op" id="mult"><p>&#215;</p></button>
+    <button class="op" id="div"><p>&#247;</p></button>
+  </div>
+  <div class="row" id="func-row">
+  	<button class="func" id="open"><p>(</p></button>
+  	<button class="func" id="close"><p>)</p></button>
+    <button class="func" id="fullclear"><p>clear</p></button>
+  </div>
+</div>
+
+
+
+
+
+  <script>
+
+  	var a="";
+  	var b="";
+  	var rez=0;
+
+  	document.getElementById(1).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "1";
+  	}
+  	document.getElementById(2).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "2";
+  	}
+  	document.getElementById(3).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "3";
+  	}
+  	document.getElementById(4).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "4";
+  	}
+  	document.getElementById(5).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "5";
+  	}
+  	document.getElementById(6).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "6";
+  	}
+  	document.getElementById(7).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "7";
+  	}
+  	document.getElementById(8).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "8";
+  	}
+  	document.getElementById(9).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "9";
+  	}
+  	document.getElementById(0).onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "0";
+  	}
+
+
+  	document.getElementById('clear').onclick = function(){
+  		var temp = document.getElementById('inputbox').innerHTML;
+  		temp = temp.split('');
+  		var edited = [];
+  		for (var i = temp.length - 2; i >= 0; i--) {
+  			edited[i]= temp[i];
+  		}
+  		temp = edited.join('');
+  		document.getElementById('inputbox').innerHTML = temp;
+  	}
+  	document.getElementById('fullclear').onclick = function(){
+  		document.getElementById('inputbox').innerHTML = "";
+  	}
+  	document.getElementById('minus').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "-";
+  	}
+  	document.getElementById('plus').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "+";
+  	}
+  	document.getElementById('mult').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "*";
+  	}
+  	document.getElementById('div').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "/";
+  	}
+	document.getElementById('eq').onclick = function(){
+  		rez = eval(document.getElementById('inputbox').innerHTML);
+  		console.log(rez);
+  		document.getElementById('inputbox').innerHTML = rez;
+  	}
+
+  	document.getElementById('open').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += "(";
+  	}
+  	document.getElementById('close').onclick = function(){
+  		document.getElementById('inputbox').innerHTML += ")";
+  	}
+
+
+  </script>
+</body>
+</html>
